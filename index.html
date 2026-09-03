@@ -1,57 +1,58 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Celeb Hub</title>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Celeb Hub Pro</title>
 <style>
 body{font-family:system-ui;margin:0;background:#09090b;color:#fff;display:flex;justify-content:center;font-size:14px}
 .app{width:100%;max-width:480px;min-height:100vh;background:#18181b;box-shadow:0 0 40px #0009;display:flex;flex-direction:column}
-header{padding:15px;display:flex;justify-content:space-between;align-items:center;background:#18181bcc;backdrop-filter:blur(12px);position:sticky;top:0;z-index:10;border-bottom:1px solid #27272a}
-header b{font-size:22px;background:linear-gradient(90deg,#8b5cf6,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900}
-.tabs{display:flex;gap:10px;padding:12px;overflow-x:auto;border-bottom:1px solid #27272a;scrollbar-width:none}
+header{padding:15px 20px;display:flex;justify-content:space-between;align-items:center;background:#18181be6;backdrop-filter:blur(12px);position:sticky;top:0;z-index:10;border-bottom:1px solid #27272a}
+header b{font-size:20px;background:linear-gradient(90deg,#8b5cf6,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900}
+.tabs{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;border-bottom:1px solid #27272a;scrollbar-width:none}
 .btn{background:#27272a;color:#fff;border:none;padding:8px 16px;border-radius:20px;font-weight:600;cursor:pointer;white-space:nowrap;transition:.3s}
 .btn.act{background:#3b82f6}
-.search-box{padding:10px;border-bottom:1px solid #27272a}
-@keyframes f{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.card{background:#09090b;margin:15px;border-radius:20px;border:1px solid #27272a;overflow:hidden;animation:f .4s}
-.hdr{display:flex;gap:12px;padding:12px;align-items:center}
+.search-box{padding:12px 16px;border-bottom:1px solid #27272a;background:#09090b}
+.card{background:#09090b;margin:16px;border-radius:20px;border:1px solid #27272a;overflow:hidden}
+.hdr{display:flex;gap:12px;padding:14px;align-items:center}
 .hdr img{width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid #3b82f6}
 .actions{padding:12px;display:flex;flex-wrap:wrap;gap:8px}
-.actions a{padding:8px;border-radius:12px;text-decoration:none;font-size:13px;font-weight:bold;color:#fff;flex:1 1 20%;text-align:center}
-dialog{background:#09090b;color:#fff;border:1px solid #27272a;border-radius:20px;padding:20px;width:90%;max-width:400px}
+.actions a{padding:8px;border-radius:10px;text-decoration:none;font-size:12px;font-weight:bold;color:#fff;flex:1 1 22%;text-align:center}
+dialog{background:#09090b;color:#fff;border:1px solid #27272a;border-radius:24px;padding:20px;width:90%;max-width:400px}
 dialog::backdrop{background:#000c;backdrop-filter:blur(5px)}
-input{width:100%;margin-bottom:10px;border-radius:12px;border:1px solid #3f3f46;background:#18181b;color:#fff;padding:12px;box-sizing:border-box}
+input{width:100%;margin-bottom:12px;border-radius:12px;border:1px solid #3f3f46;background:#18181b;color:#fff;padding:12px;box-sizing:border-box}
 input:focus{outline:none;border-color:#3b82f6}
 input[type=file]::file-selector-button{background:#3b82f6;color:#fff;border:none;padding:8px;border-radius:8px;cursor:pointer;font-weight:bold;margin-left:10px}
-.gal{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;border-top:1px solid #27272a}
-.gal iframe,.gal img{width:100%;height:140px;border-radius:12px;object-fit:cover;border:1px solid #3f3f46}
+.gal{display:grid;grid-template-columns:1fr;gap:10px;padding:14px;border-top:1px solid #27272a}
+.gal iframe,.gal video,.gal img{width:100%;height:220px;border-radius:12px;object-fit:cover;border:1px solid #3f3f46;background:#000}
 </style></head><body>
 <div class="app">
-<header><b>CELEBRITIES</b><button class="btn" style="background:#3b82f6" onclick="O(-1)">+ إضافة</button></header>
-<div class="search-box"><input id="srch" placeholder="🔍 ابحث عن مشهور..." oninput="R(cT)"></div>
+<header><b>CELEBRITIES</b><button class="btn" style="background:#3b82f6;padding:6px 14px" onclick="O(-1)">+ إضافة</button></header>
+<div class="search-box"><input id="srch" placeholder="🔍 ابحث عن اسم مشهور..." oninput="R(cT)"></div>
 <div class="tabs" id="T"></div><div id="F"></div>
 </div>
 <dialog id="M">
 <h3 style="margin-top:0;color:#3b82f6;text-align:center">بيانات الحساب</h3>
-<input id="n" placeholder="الاسم (مطلوب)"><input id="c" placeholder="التصنيف (مثال: تقنية)"><input type="file" id="f" accept="image/*"><input id="g" placeholder="روابط يوتيوب/صور (بينها مسافة)"><input id="b" placeholder="نبذة"><input id="s" placeholder="سناب"><input id="ig" placeholder="إنستغرام"><input id="x" placeholder="إكس"><input id="tk" placeholder="تيك توك">
-<div style="display:flex;gap:10px"><button class="btn" style="background:#10b981;flex:1" onclick="S()">حفظ</button><button class="btn" style="background:#ef4444;flex:1" onclick="M.close()">إلغاء</button></div>
+<input id="n" placeholder="الاسم (مطلوب)"><input id="c" placeholder="التصنيف (مثال: عام)">
+<input type="file" id="f" accept="image/*"><input id="g" placeholder="روابط الفيديوهات (يوتيوب، تيك توك، إلخ - افصل بمسافة)">
+<input id="b" placeholder="نبذة قصيرة"><input id="s" placeholder="رابط سناب"><input id="ig" placeholder="رابط إنستغرام"><input id="x" placeholder="رابط إكس"><input id="tk" placeholder="رابط تيك توك">
+<div style="display:flex;gap:10px;margin-top:5px"><button class="btn" style="background:#10b981;flex:1" onclick="S()">حفظ</button><button class="btn" style="background:#ef4444;flex:1" onclick="M.close()">إلغاء</button></div>
 </dialog>
 <script>
-let db=JSON.parse(localStorage.getItem("db9"))||[],id=-1,img="",cT='الكل',K=['n','c','b','s','ig','x','tk','g'],
+let db=JSON.parse(localStorage.getItem("db10"))||[],id=-1,img="",cT='الكل',K=['n','c','b','s','ig','x','tk','g'],
 Y=u=>(m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})/))?`https://www.youtube.com/embed/${m[1]}`:u;
 f.onchange=e=>{let r=new FileReader();r.onload=v=>img=v.target.result;if(e.target.files[0])r.readAsDataURL(e.target.files[0])};
 let R=(a='الكل')=>{cT=a;let q=srch.value.toLowerCase(),h="";
 T.innerHTML=['الكل',...new Set(db.map(x=>x.c))].map(c=>`<button class="btn ${c==a?'act':''}" onclick="srch.value='';R('${c}')">${c}</button>`).join('');
 db.map((x,i)=>({x,i})).filter(o=>(a=='الكل'||o.x.c==a)&&o.x.n.toLowerCase().includes(q)).map(({x,i})=>{
 h+=`<div class="card"><div class="hdr"><img src="${x.i}"><div><b style="font-size:16px">${x.n}</b><br><small style="color:#a1a1aa">${x.c}</small></div>
-<div style="margin-right:auto"><button class="btn" onclick="O(${i})">✏️</button> <button class="btn" style="background:#ef4444" onclick="D(${i})">✖</button></div></div>
+<div style="margin-right:auto;display:flex;gap:4px"><button class="btn" style="padding:6px 10px" onclick="O(${i})">✏️</button><button class="btn" style="padding:6px 10px;background:#ef4444" onclick="D(${i})">✖</button></div></div>
 <img style="width:100%;aspect-ratio:1;object-fit:cover" src="${x.i}"><div class="actions">
 ${x.s?`<a href="${x.s}" style="background:#fffc00;color:#000">سناب</a>`:''}${x.ig?`<a href="${x.ig}" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743)">إنستا</a>`:''}
 ${x.x?`<a href="${x.x}" style="background:#000;border:1px solid #3f3f46">إكس</a>`:''}${x.tk?`<a href="${x.tk}" style="background:#ff0050">تيك توك</a>`:''}
 </div><p style="padding:0 14px 14px;margin:0;color:#d4d4d8;line-height:1.5"><b style="color:#fff">${x.n}</b> ${x.b}</p>
-${x.g?`<div class="gal">${x.g.split(' ').map(l=>l.includes('youtu')?`<iframe src="${Y(l)}" frameborder="0" allowfullscreen></iframe>`:`<img src="${l}">`).join('')}</div>`:''}</div>`});
-F.innerHTML=h||'<div style="text-align:center;padding:40px;color:#a1a1aa">لا يوجد حسابات 📭</div>'};
+${x.g?`<div class="gal">${x.g.split(' ').map(l=>l.includes('youtu')?`<iframe src="${Y(l)}" frameborder="0" allowfullscreen></iframe>`:`<a href="${l}" target="_blank" style="display:block;background:#27272a;padding:12px;border-radius:12px;text-align:center;color:#fff;text-decoration:none;font-weight:bold;">🔗 مشاهدة مقطع الفيديو</a>`).join('')}</div>`:''}</div>`});
+F.innerHTML=h||'<div style="text-align:center;padding:40px;color:#a1a1aa">لا توجد نتائج 📭</div>'};
 let O=i=>{id=i;let v=i>-1?db[i]:{};K.map(k=>window[k].value=v[k]||'');img=v.i||'';f.value='';M.showModal()};
 let S=()=>{if(!n.value)return;let o={i:img||'https://via.placeholder.com/400/27272a/fff?text=No+Photo'};
 K.map(k=>o[k]=window[k].value);o.c=o.c||'عام';o.g=o.g.trim();id>-1?db[id]=o:db.unshift(o);
-try{localStorage.setItem("db9",JSON.stringify(db));M.close();R(cT)}catch(e){alert("❌ الذاكرة ممتلئة! اختر صورة أصغر.");db.shift()}};
-let D=i=>{if(confirm('حذف؟')){db.splice(i,1);localStorage.setItem("db9",JSON.stringify(db));R(cT)}};
+try{localStorage.setItem("db10",JSON.stringify(db));M.close();R(cT)}catch(e){alert("❌ الذاكرة ممتلئة! اختر صورة أصغر.");db.shift()}};
+let D=i=>{if(confirm('حذف؟')){db.splice(i,1);localStorage.setItem("db10",JSON.stringify(db));R(cT)}};
 R();
 </script></body></html>
