@@ -25,38 +25,33 @@ input[type=file]::file-selector-button{background:#3b82f6;color:#fff;border:none
 </style></head><body>
 <div class="app">
 <header><b>CELEBRITIES</b><button class="btn" style="background:#3b82f6" onclick="O(-1)">+ إضافة</button></header>
-<div class="search-box"><input id="srch" placeholder="🔍 ابحث عن مشهور..." onkeyup="R(cT)"></div>
+<div class="search-box"><input id="srch" placeholder="🔍 ابحث عن مشهور..." oninput="R(cT)"></div>
 <div class="tabs" id="T"></div><div id="F"></div>
 </div>
 <dialog id="M">
-<h3 style="margin-top:0;color:#3b82f6;text-align:center">بيانات المشهور</h3>
-<input id="n" placeholder="الاسم (مطلوب)"><input id="c" placeholder="التصنيف (مثال: تقنية)">
-<input type="file" id="f" accept="image/*"><input id="g" placeholder="روابط يوتيوب/صور (بينها مسافة)">
-<input id="b" placeholder="نبذة"><input id="s" placeholder="سناب"><input id="ig" placeholder="إنستغرام"><input id="x" placeholder="إكس"><input id="tk" placeholder="تيك توك">
+<h3 style="margin-top:0;color:#3b82f6;text-align:center">بيانات الحساب</h3>
+<input id="n" placeholder="الاسم (مطلوب)"><input id="c" placeholder="التصنيف (مثال: تقنية)"><input type="file" id="f" accept="image/*"><input id="g" placeholder="روابط يوتيوب/صور (بينها مسافة)"><input id="b" placeholder="نبذة"><input id="s" placeholder="سناب"><input id="ig" placeholder="إنستغرام"><input id="x" placeholder="إكس"><input id="tk" placeholder="تيك توك">
 <div style="display:flex;gap:10px"><button class="btn" style="background:#10b981;flex:1" onclick="S()">حفظ</button><button class="btn" style="background:#ef4444;flex:1" onclick="M.close()">إلغاء</button></div>
 </dialog>
 <script>
-let db=JSON.parse(localStorage.getItem("db8"))||[], id=-1, img="", cT='الكل', K=['n','c','b','s','ig','x','tk','g'];
+let db=JSON.parse(localStorage.getItem("db9"))||[],id=-1,img="",cT='الكل',K=['n','c','b','s','ig','x','tk','g'],
+Y=u=>(m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})/))?`https://www.youtube.com/embed/${m[1]}`:u;
 f.onchange=e=>{let r=new FileReader();r.onload=v=>img=v.target.result;if(e.target.files[0])r.readAsDataURL(e.target.files[0])};
-let Y=u=>(m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})/))?`https://www.youtube.com/embed/${m[1]}`:u;
-let R=(a='الكل')=>{ cT=a; let q=srch.value.toLowerCase();
+let R=(a='الكل')=>{cT=a;let q=srch.value.toLowerCase(),h="";
 T.innerHTML=['الكل',...new Set(db.map(x=>x.c))].map(c=>`<button class="btn ${c==a?'act':''}" onclick="srch.value='';R('${c}')">${c}</button>`).join('');
-let h = db.map((x,i)=>({x,i})).filter(o=>(a=='الكل'||o.x.c==a)&&o.x.n.toLowerCase().includes(q)).map(({x,i})=>`
-<div class="card"><div class="hdr"><img src="${x.i}"><div><b style="font-size:16px">${x.n}</b><br><small style="color:#a1a1aa">${x.c}</small></div>
+db.map((x,i)=>({x,i})).filter(o=>(a=='الكل'||o.x.c==a)&&o.x.n.toLowerCase().includes(q)).map(({x,i})=>{
+h+=`<div class="card"><div class="hdr"><img src="${x.i}"><div><b style="font-size:16px">${x.n}</b><br><small style="color:#a1a1aa">${x.c}</small></div>
 <div style="margin-right:auto"><button class="btn" onclick="O(${i})">✏️</button> <button class="btn" style="background:#ef4444" onclick="D(${i})">✖</button></div></div>
-<img style="width:100%;aspect-ratio:1;object-fit:cover" src="${x.i}">
-<div class="actions">
+<img style="width:100%;aspect-ratio:1;object-fit:cover" src="${x.i}"><div class="actions">
 ${x.s?`<a href="${x.s}" style="background:#fffc00;color:#000">سناب</a>`:''}${x.ig?`<a href="${x.ig}" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743)">إنستا</a>`:''}
 ${x.x?`<a href="${x.x}" style="background:#000;border:1px solid #3f3f46">إكس</a>`:''}${x.tk?`<a href="${x.tk}" style="background:#ff0050">تيك توك</a>`:''}
 </div><p style="padding:0 14px 14px;margin:0;color:#d4d4d8;line-height:1.5"><b style="color:#fff">${x.n}</b> ${x.b}</p>
-${x.g?`<div class="gal">${x.g.split(' ').map(l=>l.includes('youtu')?`<iframe src="${Y(l)}" frameborder="0" allowfullscreen></iframe>`:`<img src="${l}">`).join('')}</div>`:''}</div>`).join('');
-F.innerHTML = h || '<div style="text-align:center;padding:40px;color:#a1a1aa">لا يوجد حسابات 📭</div>';};
-let O=i=>{id=i;let v=i>-1?db[i]:{};K.forEach(k=>window[k].value=v[k]||'');img=v.i||'';f.value='';M.showModal()};
-let S=()=>{if(!n.value)return; let o={i:img||'https://via.placeholder.com/400/27272a/fff?text=No+Photo'}; 
-K.forEach(k=>o[k]=window[k].value); o.c=o.c||'عام'; o.g=o.g.trim();
-id>-1?db[id]=o:db.unshift(o); 
-try{localStorage.setItem("db8",JSON.stringify(db)); M.close(); R(cT)} 
-catch(e){alert("❌ الذاكرة ممتلئة! اختر صورة أصغر."); db.shift();}};
-let D=i=>{if(confirm('حذف؟')){db.splice(i,1);localStorage.setItem("db8",JSON.stringify(db));R(cT)}};
+${x.g?`<div class="gal">${x.g.split(' ').map(l=>l.includes('youtu')?`<iframe src="${Y(l)}" frameborder="0" allowfullscreen></iframe>`:`<img src="${l}">`).join('')}</div>`:''}</div>`});
+F.innerHTML=h||'<div style="text-align:center;padding:40px;color:#a1a1aa">لا يوجد حسابات 📭</div>'};
+let O=i=>{id=i;let v=i>-1?db[i]:{};K.map(k=>window[k].value=v[k]||'');img=v.i||'';f.value='';M.showModal()};
+let S=()=>{if(!n.value)return;let o={i:img||'https://via.placeholder.com/400/27272a/fff?text=No+Photo'};
+K.map(k=>o[k]=window[k].value);o.c=o.c||'عام';o.g=o.g.trim();id>-1?db[id]=o:db.unshift(o);
+try{localStorage.setItem("db9",JSON.stringify(db));M.close();R(cT)}catch(e){alert("❌ الذاكرة ممتلئة! اختر صورة أصغر.");db.shift()}};
+let D=i=>{if(confirm('حذف؟')){db.splice(i,1);localStorage.setItem("db9",JSON.stringify(db));R(cT)}};
 R();
 </script></body></html>
