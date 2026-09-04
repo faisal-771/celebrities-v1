@@ -1,58 +1,425 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Celeb Hub Pro</title>
-<style>
-body{font-family:system-ui;margin:0;background:#09090b;color:#fff;display:flex;justify-content:center;font-size:14px}
-.app{width:100%;max-width:480px;min-height:100vh;background:#18181b;box-shadow:0 0 40px #0009;display:flex;flex-direction:column}
-header{padding:15px 20px;display:flex;justify-content:space-between;align-items:center;background:#18181be6;backdrop-filter:blur(12px);position:sticky;top:0;z-index:10;border-bottom:1px solid #27272a}
-header b{font-size:20px;background:linear-gradient(90deg,#8b5cf6,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900}
-.tabs{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;border-bottom:1px solid #27272a;scrollbar-width:none}
-.btn{background:#27272a;color:#fff;border:none;padding:8px 16px;border-radius:20px;font-weight:600;cursor:pointer;white-space:nowrap;transition:.3s}
-.btn.act{background:#3b82f6}
-.search-box{padding:12px 16px;border-bottom:1px solid #27272a;background:#09090b}
-.card{background:#09090b;margin:16px;border-radius:20px;border:1px solid #27272a;overflow:hidden}
-.hdr{display:flex;gap:12px;padding:14px;align-items:center}
-.hdr img{width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid #3b82f6}
-.actions{padding:12px;display:flex;flex-wrap:wrap;gap:8px}
-.actions a{padding:8px;border-radius:10px;text-decoration:none;font-size:12px;font-weight:bold;color:#fff;flex:1 1 22%;text-align:center}
-dialog{background:#09090b;color:#fff;border:1px solid #27272a;border-radius:24px;padding:20px;width:90%;max-width:400px}
-dialog::backdrop{background:#000c;backdrop-filter:blur(5px)}
-input{width:100%;margin-bottom:12px;border-radius:12px;border:1px solid #3f3f46;background:#18181b;color:#fff;padding:12px;box-sizing:border-box}
-input:focus{outline:none;border-color:#3b82f6}
-input[type=file]::file-selector-button{background:#3b82f6;color:#fff;border:none;padding:8px;border-radius:8px;cursor:pointer;font-weight:bold;margin-left:10px}
-.gal{display:grid;grid-template-columns:1fr;gap:10px;padding:14px;border-top:1px solid #27272a}
-.gal iframe,.gal video,.gal img{width:100%;height:220px;border-radius:12px;object-fit:cover;border:1px solid #3f3f46;background:#000}
-</style></head><body>
-<div class="app">
-<header><b>CELEBRITIES</b><button class="btn" style="background:#3b82f6;padding:6px 14px" onclick="O(-1)">+ إضافة</button></header>
-<div class="search-box"><input id="srch" placeholder="🔍 ابحث عن اسم مشهور..." oninput="R(cT)"></div>
-<div class="tabs" id="T"></div><div id="F"></div>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Arcade Celeb Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        /* المتغيرات الأساسية للألوان */
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-yellow: #ffff00;
+            --neon-green: #39ff14;
+            --bg-dark: #050505;
+        }
+
+        /* الإعدادات العامة والتصميم القديم */
+        body {
+            font-family: 'Changa', sans-serif;
+            margin: 0;
+            background-color: var(--bg-dark);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* تأثير خطوط الشاشة */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* الحاوية الرئيسية للتطبيق */
+        .app-container {
+            width: 100%;
+            max-width: 500px;
+            min-height: 100vh;
+            background: #111;
+            border-left: 4px solid #fff;
+            border-right: 4px solid #fff;
+            position: relative;
+        }
+
+        /* الشريط العلوي */
+        header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #000;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 4px solid var(--neon-pink);
+        }
+
+        header .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            color: var(--neon-yellow);
+            text-shadow: 2px 2px 0px #ff0000;
+            line-height: 1.5;
+        }
+
+        /* الأزرار العامة بأسلوب الآركيد */
+        .btn {
+            font-family: 'Changa', sans-serif;
+            background: #222;
+            color: #fff;
+            border: 2px solid #fff;
+            padding: 8px 16px;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 4px 4px 0px #fff;
+            transition: all 0.1s;
+        }
+
+        .btn:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px #fff;
+        }
+
+        .btn-add { background: var(--neon-green); color: #000; border-color: var(--neon-green); }
+        .btn-save { background: var(--neon-blue); color: #000; }
+        .btn-cancel { background: #ff0000; color: #fff; border-color: #ff0000; box-shadow: 4px 4px 0px #880000; }
+
+        /* منطقة البحث والتصنيفات */
+        .search-container { padding: 15px; background: #000; }
+        .search-input {
+            font-family: 'Changa', sans-serif;
+            width: 100%;
+            border: 2px solid var(--neon-blue);
+            background: #000;
+            color: var(--neon-green);
+            padding: 12px;
+            font-weight: bold;
+            box-sizing: border-box;
+            box-shadow: inset 2px 2px 5px #000;
+        }
+        .search-input:focus { outline: none; border-color: var(--neon-pink); }
+
+        .categories-tabs {
+            display: flex;
+            gap: 12px;
+            padding: 15px;
+            overflow-x: auto;
+            background: #000;
+            border-bottom: 2px dashed #444;
+            scrollbar-width: thin;
+            scrollbar-color: var(--neon-pink) #000;
+        }
+        .tab-btn.active {
+            background: var(--neon-blue);
+            color: #000;
+            border-color: var(--neon-blue);
+            box-shadow: 4px 4px 0px var(--neon-pink);
+        }
+
+        /* بطاقة المشهور (Fighter Card) */
+        .fighter-card {
+            background: #000;
+            margin: 20px 15px;
+            border: 4px solid #555;
+            box-shadow: 8px 8px 0px #222;
+        }
+        .fighter-card:hover { border-color: var(--neon-yellow); }
+
+        .card-header {
+            display: flex;
+            gap: 12px;
+            padding: 10px;
+            align-items: center;
+            background: #222;
+            border-bottom: 4px solid #555;
+        }
+
+        .card-header img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border: 2px solid var(--neon-yellow);
+        }
+
+        .fighter-name { font-size: 18px; color: var(--neon-yellow); font-weight: bold; }
+        .fighter-class { color: #aaa; font-size: 12px; }
+
+        .card-image {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-bottom: 4px solid #555;
+        }
+
+        .card-bio {
+            padding: 15px;
+            margin: 0;
+            color: var(--neon-green);
+            line-height: 1.5;
+            font-weight: bold;
+        }
+
+        /* أزرار التواصل الاجتماعي */
+        .social-actions {
+            padding: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: #111;
+            border-top: 4px solid #555;
+        }
+        .social-btn {
+            padding: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 800;
+            color: #000;
+            flex: 1 1 22%;
+            text-align: center;
+            border: 2px solid #fff;
+            box-shadow: 3px 3px 0px #fff;
+        }
+        .social-btn:active { transform: translate(3px, 3px); box-shadow: 0px 0px 0px; }
+
+        /* نافذة الإضافة والتعديل (Modal) */
+        dialog {
+            background: #000;
+            color: var(--neon-green);
+            border: 4px solid var(--neon-pink);
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 10px 10px 0px var(--neon-blue);
+        }
+        dialog::backdrop { background: rgba(0,0,0,0.8); }
+        
+        .form-group { margin-bottom: 12px; }
+        .form-label { display: block; color: #fff; font-size: 12px; margin-bottom: 5px; }
+        .form-input { width: 100%; border: 2px solid #555; background: #111; color: #fff; padding: 10px; box-sizing: border-box; }
+        .form-input:focus { border-color: var(--neon-blue); outline: none; }
+
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header>
+        <div class="logo">SELECT<br>FIGHTER</div>
+        <button class="btn btn-add" onclick="openModal(-1)">+ INSERT PLAYER</button>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="[ ابحث عن مقاتل... ]" oninput="renderCelebrities(activeCategory)">
+    </div>
+
+    <div class="categories-tabs" id="tabsContainer">
+        <!-- التصنيفات تظهر هنا -->
+    </div>
+
+    <div id="cardsContainer">
+        <!-- البطاقات تظهر هنا -->
+    </div>
 </div>
-<dialog id="M">
-<h3 style="margin-top:0;color:#3b82f6;text-align:center">بيانات الحساب</h3>
-<input id="n" placeholder="الاسم (مطلوب)"><input id="c" placeholder="التصنيف (مثال: عام)">
-<input type="file" id="f" accept="image/*"><input id="g" placeholder="روابط الفيديوهات (يوتيوب، تيك توك، إلخ - افصل بمسافة)">
-<input id="b" placeholder="نبذة قصيرة"><input id="s" placeholder="رابط سناب"><input id="ig" placeholder="رابط إنستغرام"><input id="x" placeholder="رابط إكس"><input id="tk" placeholder="رابط تيك توك">
-<div style="display:flex;gap:10px;margin-top:5px"><button class="btn" style="background:#10b981;flex:1" onclick="S()">حفظ</button><button class="btn" style="background:#ef4444;flex:1" onclick="M.close()">إلغاء</button></div>
+
+<!-- نافذة إضافة/تعديل المشاهير -->
+<dialog id="celebModal">
+    <h2 style="margin-top:0; color:var(--neon-pink); text-align:center; font-family:'Press Start 2P'; font-size:14px;">PLAYER STATS</h2>
+    
+    <div class="form-group">
+        <label class="form-label">الاسم (FIGHTER NAME):</label>
+        <input type="text" id="inputName" class="form-input">
+    </div>
+    
+    <div class="form-group">
+        <label class="form-label">التصنيف (CLASS - مثل: يوتيوبر، قيمر):</label>
+        <input type="text" id="inputCategory" class="form-input">
+    </div>
+
+    <div class="form-group" style="border: 2px dashed #555; padding: 10px;">
+        <label class="form-label">صورة المقاتل (AVATAR):</label>
+        <input type="file" id="inputFile" accept="image/*" style="color: #fff;">
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">نبذة قصيرة (BIO):</label>
+        <input type="text" id="inputBio" class="form-input">
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">رابط يوتيوب (يفضل رابط Embed):</label>
+        <input type="text" id="inputVideo" class="form-input" placeholder="https://youtube.com/...">
+    </div>
+
+    <div class="form-group"><label class="form-label">رابط سناب شات:</label><input type="text" id="inputSnap" class="form-input"></div>
+    <div class="form-group"><label class="form-label">رابط إنستغرام:</label><input type="text" id="inputInsta" class="form-input"></div>
+    <div class="form-group"><label class="form-label">رابط منصة إكس (تويتر):</label><input type="text" id="inputX" class="form-input"></div>
+    <div class="form-group"><label class="form-label">رابط تيك توك:</label><input type="text" id="inputTiktok" class="form-input"></div>
+
+    <div style="display:flex; gap:15px; margin-top:20px;">
+        <button class="btn btn-save" style="flex:1" onclick="saveCelebrity()">SAVE</button>
+        <button class="btn btn-cancel" style="flex:1" onclick="document.getElementById('celebModal').close()">CANCEL</button>
+    </div>
 </dialog>
+
 <script>
-let db=JSON.parse(localStorage.getItem("db10"))||[],id=-1,img="",cT='الكل',K=['n','c','b','s','ig','x','tk','g'],
-Y=u=>(m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})/))?`https://www.youtube.com/embed/${m[1]}`:u;
-f.onchange=e=>{let r=new FileReader();r.onload=v=>img=v.target.result;if(e.target.files[0])r.readAsDataURL(e.target.files[0])};
-let R=(a='الكل')=>{cT=a;let q=srch.value.toLowerCase(),h="";
-T.innerHTML=['الكل',...new Set(db.map(x=>x.c))].map(c=>`<button class="btn ${c==a?'act':''}" onclick="srch.value='';R('${c}')">${c}</button>`).join('');
-db.map((x,i)=>({x,i})).filter(o=>(a=='الكل'||o.x.c==a)&&o.x.n.toLowerCase().includes(q)).map(({x,i})=>{
-h+=`<div class="card"><div class="hdr"><img src="${x.i}"><div><b style="font-size:16px">${x.n}</b><br><small style="color:#a1a1aa">${x.c}</small></div>
-<div style="margin-right:auto;display:flex;gap:4px"><button class="btn" style="padding:6px 10px" onclick="O(${i})">✏️</button><button class="btn" style="padding:6px 10px;background:#ef4444" onclick="D(${i})">✖</button></div></div>
-<img style="width:100%;aspect-ratio:1;object-fit:cover" src="${x.i}"><div class="actions">
-${x.s?`<a href="${x.s}" style="background:#fffc00;color:#000">سناب</a>`:''}${x.ig?`<a href="${x.ig}" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743)">إنستا</a>`:''}
-${x.x?`<a href="${x.x}" style="background:#000;border:1px solid #3f3f46">إكس</a>`:''}${x.tk?`<a href="${x.tk}" style="background:#ff0050">تيك توك</a>`:''}
-</div><p style="padding:0 14px 14px;margin:0;color:#d4d4d8;line-height:1.5"><b style="color:#fff">${x.n}</b> ${x.b}</p>
-${x.g?`<div class="gal">${x.g.split(' ').map(l=>l.includes('youtu')?`<iframe src="${Y(l)}" frameborder="0" allowfullscreen></iframe>`:`<a href="${l}" target="_blank" style="display:block;background:#27272a;padding:12px;border-radius:12px;text-align:center;color:#fff;text-decoration:none;font-weight:bold;">🔗 مشاهدة مقطع الفيديو</a>`).join('')}</div>`:''}</div>`});
-F.innerHTML=h||'<div style="text-align:center;padding:40px;color:#a1a1aa">لا توجد نتائج 📭</div>'};
-let O=i=>{id=i;let v=i>-1?db[i]:{};K.map(k=>window[k].value=v[k]||'');img=v.i||'';f.value='';M.showModal()};
-let S=()=>{if(!n.value)return;let o={i:img||'https://via.placeholder.com/400/27272a/fff?text=No+Photo'};
-K.map(k=>o[k]=window[k].value);o.c=o.c||'عام';o.g=o.g.trim();id>-1?db[id]=o:db.unshift(o);
-try{localStorage.setItem("db10",JSON.stringify(db));M.close();R(cT)}catch(e){alert("❌ الذاكرة ممتلئة! اختر صورة أصغر.");db.shift()}};
-let D=i=>{if(confirm('حذف؟')){db.splice(i,1);localStorage.setItem("db10",JSON.stringify(db));R(cT)}};
-R();
-</script></body></html>
+    // 1. المتغيرات الأساسية بأسماء واضحة
+    let database = JSON.parse(localStorage.getItem("celeb_database")) || [];
+    let currentEditIndex = -1;
+    let currentImageBase64 = "";
+    let activeCategory = 'الكل';
+
+    // 2. تحويل رابط يوتيوب العادي إلى رابط قابل للعرض (Embed)
+    const formatYouTubeUrl = (url) => {
+        if (!url) return '';
+        const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})/);
+        return match ? `https://www.youtube.com/embed/${match[1]}` : url;
+    };
+
+    // 3. قراءة الصورة وتحويلها عند اختيارها
+    document.getElementById('inputFile').addEventListener('change', function(event) {
+        const reader = new FileReader();
+        reader.onload = (e) => { currentImageBase64 = e.target.result; };
+        if (event.target.files[0]) {
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    });
+
+    // 4. دالة عرض المشاهير والتصنيفات (Render)
+    const renderCelebrities = (category = 'الكل') => {
+        activeCategory = category;
+        const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+        const tabsContainer = document.getElementById('tabsContainer');
+        const cardsContainer = document.getElementById('cardsContainer');
+        
+        // جلب التصنيفات الفريدة من قاعدة البيانات
+        const allCategories = ['الكل', ...new Set(database.map(celeb => celeb.category))];
+        
+        // رسم أزرار التصنيفات
+        tabsContainer.innerHTML = allCategories.map(cat => 
+            `<button class="btn tab-btn ${cat === category ? 'active' : ''}" onclick="document.getElementById('searchInput').value=''; renderCelebrities('${cat}')">${cat}</button>`
+        ).join('');
+        
+        // فلترة ورسم البطاقات
+        let htmlOutput = "";
+        database.forEach((celeb, index) => {
+            if ((category === 'الكل' || celeb.category === category) && celeb.name.toLowerCase().includes(searchQuery)) {
+                htmlOutput += `
+                <div class="fighter-card">
+                    <div class="card-header">
+                        <img src="${celeb.image}">
+                        <div style="flex: 1;">
+                            <div class="fighter-name">${celeb.name}</div>
+                            <div class="fighter-class">LVL: ${celeb.category}</div>
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <button class="btn" style="padding:4px 8px; font-size:12px; background:var(--neon-yellow); color:#000;" onclick="openModal(${index})">EDIT</button>
+                            <button class="btn btn-cancel" style="padding:4px 8px; font-size:12px;" onclick="deleteCelebrity(${index})">X</button>
+                        </div>
+                    </div>
+                    
+                    <img class="card-image" src="${celeb.image}">
+                    <p class="card-bio">> ${celeb.bio}</p>
+                    
+                    <div class="social-actions">
+                        ${celeb.snap ? `<a href="${celeb.snap}" class="social-btn" style="background:#fffc00; border-color:#fffc00;">SNAP</a>` : ''}
+                        ${celeb.insta ? `<a href="${celeb.insta}" class="social-btn" style="background:#f09433; border-color:#f09433;">INSTA</a>` : ''}
+                        ${celeb.xLink ? `<a href="${celeb.xLink}" class="social-btn" style="background:#aaa; border-color:#aaa;">X</a>` : ''}
+                        ${celeb.tiktok ? `<a href="${celeb.tiktok}" class="social-btn" style="background:var(--neon-pink); border-color:var(--neon-pink);">TIKTOK</a>` : ''}
+                    </div>
+                    
+                    ${celeb.video ? `
+                    <div style="padding: 14px; background: #000;">
+                        ${celeb.video.includes('youtu') 
+                            ? `<iframe style="width:100%; height:220px; border:4px solid var(--neon-blue);" src="${formatYouTubeUrl(celeb.video)}" frameborder="0" allowfullscreen></iframe>` 
+                            : `<a href="${celeb.video}" target="_blank" style="display:block; background:#222; padding:12px; border:4px solid var(--neon-blue); text-align:center; color:var(--neon-blue); text-decoration:none; font-weight:bold;">[ PLAY VIDEO ]</a>`
+                        }
+                    </div>` : ''}
+                </div>`;
+            }
+        });
+
+        // رسالة إذا لم توجد نتائج
+        if (htmlOutput === "") {
+            cardsContainer.innerHTML = `<div style="text-align:center; padding:50px; color:#ff0000; font-family:'Press Start 2P'; font-size:14px; line-height:2;">GAME OVER<br><br><span style="color:#fff; font-family:'Changa'">لا يوجد مقاتلين بهذا الاسم</span></div>`;
+        } else {
+            cardsContainer.innerHTML = htmlOutput;
+        }
+    };
+
+    // 5. دالة فتح نافذة الإضافة/التعديل
+    const openModal = (index) => {
+        currentEditIndex = index;
+        const modal = document.getElementById('celebModal');
+        const celeb = index > -1 ? database[index] : {};
+
+        document.getElementById('inputName').value = celeb.name || '';
+        document.getElementById('inputCategory').value = celeb.category || '';
+        document.getElementById('inputBio').value = celeb.bio || '';
+        document.getElementById('inputVideo').value = celeb.video || '';
+        document.getElementById('inputSnap').value = celeb.snap || '';
+        document.getElementById('inputInsta').value = celeb.insta || '';
+        document.getElementById('inputX').value = celeb.xLink || '';
+        document.getElementById('inputTiktok').value = celeb.tiktok || '';
+        document.getElementById('inputFile').value = ''; 
+        
+        currentImageBase64 = celeb.image || '';
+        modal.showModal();
+    };
+
+    // 6. دالة حفظ البيانات
+    const saveCelebrity = () => {
+        const name = document.getElementById('inputName').value.trim();
+        if (!name) {
+            alert("⚠️ يجب كتابة اسم المقاتل!");
+            return;
+        }
+
+        const newCeleb = {
+            name: name,
+            category: document.getElementById('inputCategory').value.trim() || 'عام',
+            bio: document.getElementById('inputBio').value.trim(),
+            video: document.getElementById('inputVideo').value.trim(),
+            snap: document.getElementById('inputSnap').value.trim(),
+            insta: document.getElementById('inputInsta').value.trim(),
+            xLink: document.getElementById('inputX').value.trim(),
+            tiktok: document.getElementById('inputTiktok').value.trim(),
+            image: currentImageBase64 || 'https://via.placeholder.com/400/000/39ff14?text=NO+AVATAR'
+        };
+
+        if (currentEditIndex > -1) {
+            database[currentEditIndex] = newCeleb; // تعديل موجود
+        } else {
+            database.unshift(newCeleb); // إضافة جديد في البداية
+        }
+
+        try {
+            localStorage.setItem("celeb_database", JSON.stringify(database));
+            document.getElementById('celebModal').close();
+            renderCelebrities(activeCategory);
+        } catch (error) {
+            alert("❌ مساحة التخزين ممتلئة! يرجى اختيار صورة بحجم أصغر.");
+            if (currentEditIndex === -1) database.shift(); // التراجع عن الإضافة إذا فشل الحفظ
+        }
+    };
+
+    // 7. دالة الحذف
+    const deleteCelebrity = (index) => {
+        if (confirm('FINISH HIM? هل أنت متأكد من حذف هذا المقاتل؟')) {
+            database.splice(index, 1);
+            localStorage.setItem("celeb_database", JSON.stringify(database));
+            renderCelebrities(activeCategory);
+        }
+    };
+
+    // تشغيل العرض عند فتح الصفحة لأول مرة
+    renderCelebrities();
+</script>
+</body>
+</html>
